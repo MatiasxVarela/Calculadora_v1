@@ -1,0 +1,51 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+h1 {
+    text-align: center;
+    margin-top: 100px;
+}
+.container {
+    margin: auto;
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; 
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr; 
+    gap: 4px 4px; 
+    grid-template-areas:
+        "texto_resultado texto_resultado texto_resultado texto_resultado texto_resultado"
+      "btn_siete btn_ocho btn_nueve btn_deleteAll btn_delete"
+      "btn_cuatro btn_cinco btn_seis btn_resta btn_suma"
+      "btn_uno btn_dos btn_tres btn_division btn_multiplicacion"
+      ". btn_cero . btn_resultado btn_resultado"; 
+    width: 500px; 
+    height: 500px; 
+  }
+#texto_resultado {
+    grid-area: texto_resultado;
+    text-align: center;
+    margin: auto;
+    }
+#resultado_final {
+    margin: 0px;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 20px;
+}
+#btn_cero { grid-area: btn_cero; }
+#btn_dos { grid-area: btn_dos; }
+#btn_tres { grid-area: btn_tres; }
+#btn_cuatro { grid-area: btn_cuatro; }
+#btn_cinco { grid-area: btn_cinco; }
+#btn_seis { grid-area: btn_seis; }
+#btn_siete { grid-area: btn_siete; }
+#btn_ocho { grid-area: btn_ocho; }
+#btn_nueve { grid-area: btn_nueve; }
+#btn_resta { grid-area: btn_resta; }
+#btn_suma { grid-area: btn_suma; }
+#btn_division { grid-area: btn_division; }
+#btn_multiplicacion { grid-area: btn_multiplicacion; }
+#btn_resultado { grid-area: btn_resultado; }
+#btn_uno { grid-area: btn_uno; }
+#btn_deleteAll { grid-area: btn_deleteAll; }
+#btn_delete { grid-area: btn_delete; }
