@@ -26,21 +26,25 @@ let verificador_operador = function() {
     }
 }
 
-let visualizador = function(a) {
+let vacio = function(){
     if (resultado_final.innerHTML != ""){
         contenido_texto = [0];
+        resultado_final.innerHTML = "";
     }
-    resultado_final.innerHTML = "";
+}
+let visualizador = function(a) {
+    vacio();
     contenido_texto.push(a);
     texto_resultado.innerHTML = contenido_texto.join("");
 }
 
 let visualizadorNumero = function(a) {
-    /* if (contenido_texto[0] == 0 && contenido_texto[1] == undefined){ */
-    if (contenido_texto[contenido_texto.length - 1] == 0 && (contenido_texto[contenido_texto.length - 2] == undefined || contenido_texto[contenido_texto.length - 2] == " + " || contenido_texto[contenido_texto.length - 2] == " - "|| contenido_texto[contenido_texto.length - 2] == " * "|| contenido_texto[contenido_texto.length - 2] == " / ") /* && contenido_texto[1] == undefined */){
+    vacio();
+    if (contenido_texto[contenido_texto.length - 1] == 0 && (contenido_texto[contenido_texto.length - 2] == undefined || contenido_texto[contenido_texto.length - 2] == " + " || contenido_texto[contenido_texto.length - 2] == " - "|| contenido_texto[contenido_texto.length - 2] == " * "|| contenido_texto[contenido_texto.length - 2] == " / ") ){
         contenido_texto.pop();
     }
-    visualizador(a);
+    contenido_texto.push(a);
+    texto_resultado.innerHTML = contenido_texto.join("");
 }
 
 btn_cero.onclick = function(){
@@ -219,5 +223,7 @@ let calculadora = function(){
 }
 
 btn_resultado.onclick = function(){
-    calculadora();
+    if (contenido_texto[contenido_texto.length - 1] != " + " && contenido_texto[contenido_texto.length - 1] != " - " && contenido_texto[contenido_texto.length - 1] != " / " && contenido_texto[contenido_texto.length - 1] != " * "){
+        calculadora();
+    }
 }
