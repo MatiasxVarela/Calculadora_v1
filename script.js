@@ -17,11 +17,13 @@ const btn_deleteAll = document.querySelector("#btn_deleteAll");
 const btn_resultado = document.querySelector("#btn_resultado");
 const texto_resultado = document.querySelector("#texto_resultado")
 const resultado_final = document.querySelector("#resultado_final")
+/* const btn_raiz = document.querySelector("#btn_raiz") */
+const btn_elevacion = document.querySelector("#btn_elevacion")
 let contenido_texto = [0]
 texto_resultado.innerHTML = contenido_texto.join("");
 
 let verificador_operador = function() {
-    if (contenido_texto[contenido_texto.length - 1] == " * " ||contenido_texto[contenido_texto.length - 1] == " - " ||contenido_texto[contenido_texto.length - 1] == " + " ||contenido_texto[contenido_texto.length - 1] == " / "){
+    if (contenido_texto[contenido_texto.length - 1] == " * " ||contenido_texto[contenido_texto.length - 1] == " - " ||contenido_texto[contenido_texto.length - 1] == " + " ||contenido_texto[contenido_texto.length - 1] == " / " || contenido_texto[contenido_texto.length - 1] == " ^ " || contenido_texto[contenido_texto.length - 1] == " √ " ){
         contenido_texto.pop()
     }
 }
@@ -107,6 +109,16 @@ btn_multiplicacion.onclick = function(){
     visualizador(" * ");
 }
 
+/* btn_raiz.onclick = function(){
+    verificador_operador();
+    visualizadorNumero(" √ ");
+} */
+
+btn_elevacion.onclick = function(){
+    verificador_operador();
+    visualizador(" ^ ");
+}
+
 btn_delete.onclick = function(){
     if(contenido_texto.length == 1){
         contenido_texto = [0];
@@ -122,108 +134,54 @@ btn_deleteAll.onclick = function(){
     texto_resultado.innerHTML = contenido_texto;
 }
 
+// Empieza calculadora
 
-/// Acá empieza el funcionamiento de las sumás
-let calculadora = function(){
-    const numerosCalucular = {}; 
-    const numerosSumar = {}
-    let resultado = contenido_texto.join("");
-    let espacios = 0;
-    let longitud = []
-    let resultadoFinal = 0;
+let calculadora = calculo => {
+    let calculoPasado = calculo;
+    let deleteAnteriorPosterior = (i) =>{
+        calculoPasado.splice(i, 2);
+        i = i - 1;
+        return i;
+    }
 
-
-    /* recorre los valores del iput */
-    for (let i = 0; i < resultado.length; i++){
-
-    /* Si el valor recorrido es un espacio no hace nada */
-        if (resultado[i] == " "){
-    /* Revisa si el valor recorrido es un numero */
-    /* En el caso de que sea un numero lo agrega a un objeto */
-    /* Si es el primer numero de un entero crea un parametro en el objeto, si no le suma al ya creado */
-    /* Siempre el primer if para el primer numero agregado al objeto no ejecute un error */
-    /* "espacios" se usa para saber el lugar en donde sumar o en donde crear el numero */
-        }else if (resultado[i] == 0 || resultado[i] == 1 || resultado[i] == 2 || resultado[i] == 3|| resultado[i] == 4|| resultado[i] == 5|| resultado[i] == 6|| resultado[i] == 7|| resultado[i] == 8|| resultado[i] == 9){
-            if (numerosCalucular[espacios] == undefined){
-                numerosCalucular[espacios] = resultado[i];
-            } else {
-                numerosCalucular[espacios] += resultado[i];
-            }
-    /* Agrega a un objeto el operador de calculo respectivo*/
-    /* los espacios se usan para saber como nombrarlo al momento de agregarlo a un objeto (siempre se nombran con numeros) */
-        } else if (resultado[i] === "+"){
-            espacios++;
-            numerosCalucular[espacios] = "sumar";
-            espacios++;
-        }else if (resultado[i] === "-"){
-            espacios++;
-            numerosCalucular[espacios] = "restar";
-            espacios++;
-        }else if (resultado[i] === "*"){
-            espacios++;
-            numerosCalucular[espacios] = "multiplicar";
-            espacios++;
-        }else if (resultado[i] === "/"){
-            espacios++;
-            numerosCalucular[espacios] = "dividir";
-            espacios++;
+    for (let i = 0; i <= calculoPasado.length; i++) {
+        if(calculoPasado[i] == " ^ "){
+            calculoPasado[i - 1] = calculoPasado[i -1] ** calculoPasado[i + 1];
+            i = deleteAnteriorPosterior(i)
         }
     }
-    
-    
-    /* una vez con todos los valores agregados a un objeto se recorre el objeto con el fin de encontrar multiplicaciones o divisiones*/
-    /* una vez que encontramos una division o multiplicación verificamos si se trata de una u otra */
-    /* Al momento de recorrerlo se busca realizar las multiplaciones o divisiones con las que nos topemos */
-    /*  para sacar la multiplicacion o division lo que se hace es que se agarra la propiedad anterior y la siguiente al operador*/
-    /* una vez que se hace esto, la operacion realizada guarda en el lugar de la segunda propiedad operada */
-    /*  despues se elimina la primera propiedad operada y la propiedad que contiene el operador*/
-    for (let i in numerosCalucular){
-        if (numerosCalucular[i] == "multiplicar" || numerosCalucular[i] == "dividir"){
-                if (numerosCalucular[i] == "multiplicar"){
-                    numerosCalucular[parseInt(i) + 1] = (parseInt(numerosCalucular[parseInt(i) -1]) * parseInt(numerosCalucular[parseInt(i) + 1]));
-                delete numerosCalucular[parseInt(i)]
-                delete numerosCalucular[parseInt(i) - 1]
-                } else if (numerosCalucular[i] == "dividir"){
-                    numerosCalucular[parseInt(i) + 1] = (parseInt(numerosCalucular[parseInt(i) -1]) / parseInt(numerosCalucular[parseInt(i) + 1]));
-                delete numerosCalucular[parseInt(i)]
-                delete numerosCalucular[parseInt(i) - 1]
-                }
+
+    for (let i = 0; i <= calculoPasado.length; i++) {
+        if(calculoPasado[i] == " * " || calculoPasado[i] == " / "){
+            if (calculoPasado[i] == " * "){
+                calculoPasado[i - 1] = calculoPasado[i -1] * calculoPasado[i + 1];
+                i = deleteAnteriorPosterior(i)
+            } else if (calculoPasado[i] == " / ") {
+                calculoPasado[i - 1] = calculoPasado[i -1] / calculoPasado[i + 1];
+                i = deleteAnteriorPosterior(i)
             }
         }
+    }
 
-        /* los siguientes dos for se hacen con el fin de "Depurar" el objeto para que no hayan problemas al recorrerlo*/
-        /* Se pasan los valores que quedan en el objeto a un array */
-        for (var contenido in numerosCalucular){
-            longitud.push(numerosCalucular[contenido])
-        }
-        /* Y despues se pasan los valores a un nuevo objeto */
-        for (let i = 0; i < longitud.length; i++){
-            numerosSumar[i] = longitud[i]
-        }
-
-        /* Ahora se recorre el nuevo objeto para terminar de operar */
-        /* Este procedimiento es exactamente igual al de las divisiones y multiplicaciones, nada más que con restas */
-        /* Variable resultadoFinal es para cuando retornamos el resultado saber en que parte del objeto se encuentra nuestra cuenta */
-        for (let i in numerosSumar){
-            if (numerosSumar[i] == "sumar" || numerosSumar[i] == "restar"){
-                if (numerosSumar[i] == "sumar"){
-                    numerosSumar[parseInt(i) + 1] = (parseInt(numerosSumar[parseInt(i) -1]) + parseInt(numerosSumar[parseInt(i) + 1]));
-                delete numerosSumar[parseInt(i)]
-                delete numerosSumar[parseInt(i) - 1]
-                resultadoFinal = parseInt(i) + 1;
-                } else if (numerosSumar[i] == "restar"){
-                    numerosSumar[parseInt(i) + 1] = (parseInt(numerosSumar[parseInt(i) -1]) - parseInt(numerosSumar[parseInt(i) + 1]));
-                delete numerosSumar[parseInt(i)]
-                delete numerosSumar[parseInt(i) - 1]
-                resultadoFinal = parseInt(i) + 1;
-                }
+    for (let i = 0; i < calculoPasado.length; i++) {
+        if(calculoPasado[i] == " - " || calculoPasado[i] == " + "){
+            if (calculoPasado[i] == " + "){
+                calculoPasado[i - 1] = parseInt(calculoPasado[i -1]) + parseInt(calculoPasado[i + 1]);
+                i = deleteAnteriorPosterior(i)
+            } else if (calculoPasado[i] == " - ") {
+                calculoPasado[i - 1] = parseInt(calculoPasado[i -1]) - parseInt(calculoPasado[i + 1]);
+                i = deleteAnteriorPosterior(i)
             }
         }
-        resultado_final.innerHTML = "Resultado: " + numerosSumar[resultadoFinal];
+    }
+    resultado_final.innerHTML = "Resultado: " + calculoPasado;
 }
 
+// Termina calculadora
+
+
 btn_resultado.onclick = function(){
-    if (contenido_texto[contenido_texto.length - 1] != " + " && contenido_texto[contenido_texto.length - 1] != " - " && contenido_texto[contenido_texto.length - 1] != " / " && contenido_texto[contenido_texto.length - 1] != " * "){
-        calculadora();
+    if (contenido_texto[contenido_texto.length - 1] != " + " && contenido_texto[contenido_texto.length - 1] != " - " && contenido_texto[contenido_texto.length - 1] != " / " && contenido_texto[contenido_texto.length - 1] != " * " && contenido_texto[contenido_texto.length - 1] != " ^ "){
+        calculadora(contenido_texto);
     }
 }
