@@ -124,7 +124,10 @@ btn_elevacion.onclick = function(){
 }
 
 btn_delete.onclick = function(){
-    if (contenido_texto.length == 1 && contenido_texto[0] == 0){
+    if (resultado_final.innerHTML != ""){
+        vacio();
+        texto_resultado.innerHTML = contenido_texto.join("");
+    }else if (contenido_texto.length == 1 && contenido_texto[0] == 0){
 
     }else if(contenido_texto.length == 1 && contenido_texto[0].length == 1){
         contenido_texto = [0];
@@ -142,6 +145,7 @@ btn_delete.onclick = function(){
 }
 
 btn_deleteAll.onclick = function(){
+    vacio();
     contenido_texto = [0];
     texto_resultado.innerHTML = contenido_texto;
 }
