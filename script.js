@@ -124,8 +124,13 @@ btn_elevacion.onclick = function(){
 }
 
 btn_delete.onclick = function(){
-    if(contenido_texto.length == 1 && contenido_texto[0].length == 1){
+    if (contenido_texto.length == 1 && contenido_texto[0] == 0){
+
+    }else if(contenido_texto.length == 1 && contenido_texto[0].length == 1){
         contenido_texto = [0];
+        texto_resultado.innerHTML = contenido_texto.join("");
+    }else if (contenido_texto[contenido_texto.length-1].length == 1){
+        contenido_texto.pop();
         texto_resultado.innerHTML = contenido_texto.join("");
     }else if (contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "1" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "2" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "3" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "4" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "5" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "6" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "7" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "8" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "9" ||contenido_texto[contenido_texto.length-1][contenido_texto[contenido_texto.length-1].length - 1] == "0" ){
         contenido_texto[contenido_texto.length-1] = contenido_texto[contenido_texto.length-1].slice(0,-1)
